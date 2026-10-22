@@ -12,7 +12,8 @@
   --cork: #b98a56;
   --ribbon: #c4453c;
   --serif: "Gowun Batang", "Batang", serif;
-  --hand: "Nanum Pen Script", "Gowun Batang", cursive;
+  --hand: "Hi Melody", "Gowun Batang", cursive;
+  --title: "East Sea Dokdo", "Gowun Batang", cursive;
 }
 
 * {
@@ -46,9 +47,13 @@ header {
 }
 
 h1 {
-  margin: 0 0 4px;
-  font-size: 34px;
-  letter-spacing: -0.01em;
+  margin: 0 0 2px;
+  font-family: var(--title);
+  font-size: 58px;
+  font-weight: 400;
+  line-height: 1.15;
+  letter-spacing: 0.02em;
+  text-shadow: 0 2px 0 rgba(255, 255, 255, 0.55);
 }
 
 .intro {
@@ -147,8 +152,8 @@ textarea {
   background: transparent;
   color: var(--paper-ink);
   font-family: var(--hand);
-  font-size: 26px;
-  line-height: 1.25;
+  font-size: 22px;
+  line-height: 1.4;
   resize: none;
 }
 
@@ -349,8 +354,8 @@ h2 {
 .entries .content {
   margin: 0;
   font-family: var(--hand);
-  font-size: 26px;
-  line-height: 1.3;
+  font-size: 22px;
+  line-height: 1.45;
   overflow-wrap: anywhere;
 }
 
@@ -363,13 +368,13 @@ h2 {
 /* ── 움직임 ───────────────────────────── */
 
 @keyframes bob {
-  0%, 100% { transform: translateY(0) rotate(-1.5deg); }
-  50% { transform: translateY(-8px) rotate(1.5deg); }
+  0%, 100% { transform: translate(-10px, 0) rotate(-1.5deg); }
+  50% { transform: translate(10px, -8px) rotate(1.5deg); }
 }
 
 @keyframes bob-alt {
-  0%, 100% { transform: translateY(-5px) rotate(1.2deg); }
-  50% { transform: translateY(5px) rotate(-1.2deg); }
+  0%, 100% { transform: translate(8px, -5px) rotate(1.2deg); }
+  50% { transform: translate(-8px, 5px) rotate(-1.2deg); }
 }
 
 @keyframes flow {
@@ -418,10 +423,101 @@ h2 {
   to { transform: translateY(0); opacity: 1; }
 }
 
-@media (max-width: 480px) {
-  h1 { font-size: 28px; }
-  .body { padding: 40px 14px 28px; }
-  .entries li { width: 96%; }
+/* 병 속 물이 출렁이는 모습 */
+
+.body {
+  isolation: isolate;
+  overflow: hidden;
+}
+
+.body::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: -1;
+  height: 70px;
+  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 70' preserveAspectRatio='none'%3E%3Cpath d='M0 22 Q50 6 100 22 T200 22 T300 22 T400 22 V70 H0Z' fill='%233a93a8' fill-opacity='0.4'/%3E%3C/svg%3E") repeat-x;
+  background-size: 400px 100%;
+  animation: flow-sm 6s linear infinite, slosh 3.6s ease-in-out infinite;
+}
+
+@keyframes flow-sm {
+  to { background-position-x: 400px; }
+}
+
+@keyframes slosh {
+  0%, 100% { transform: translateY(6px); }
+  50% { transform: translateY(-8px); }
+}
+
+@keyframes heave {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-7px); }
+}
+
+@keyframes rock {
+  0%, 100% { transform: translate(-16px, 0) rotate(-2.5deg); }
+  50% { transform: translate(16px, -10px) rotate(2.5deg); }
+}
+
+.bottle {
+  transform-origin: 50% 85%;
+  animation: rock 5.5s ease-in-out infinite;
+}
+
+.wave-back { animation: flow 16s linear infinite reverse, heave 5s ease-in-out infinite; }
+.wave-front { animation: flow 9s linear infinite, heave 4s ease-in-out 0.8s infinite; }
+
+/* ── 모바일 ───────────────────────────── */
+
+.hero,
+.sea {
+  padding-left: max(16px, env(safe-area-inset-left, 0px));
+  padding-right: max(16px, env(safe-area-inset-right, 0px));
+}
+
+@media (max-width: 600px) {
+  .hero { padding-top: 28px; padding-bottom: 48px; }
+  header { margin-bottom: 18px; }
+  h1 { font-size: 46px; }
+  .intro { font-size: 15px; text-wrap: balance; }
+
+  .cork { width: 48px; height: 32px; }
+  .neck { width: 72px; height: 70px; margin-bottom: -38px; }
+  .body {
+    padding: 40px 12px 30px;
+    border-radius: 100px 100px 56px 56px / 80px 80px 56px 56px;
+  }
+  .paper { padding: 16px 14px 14px; }
+  input, textarea { font-size: 21px; }
+  button { min-height: 48px; }
+
+  .waves, .wave-back { height: 110px; }
+  .wave-front { height: 84px; }
+  .wave { background-size: 800px 100%; }
+  @keyframes flow { to { background-position-x: 800px; } }
+
+  .sea { padding-top: 16px; padding-bottom: 56px; }
+  h2 { font-size: 20px; }
+  .entries li {
+    width: 100%;
+    margin-bottom: 26px;
+    padding: 10px 34px 10px 10px;
+    border-radius: 48px 18px 18px 48px;
+  }
+  .entries li:nth-child(even) { margin-right: 0; width: 94%; }
+  .note { padding: 6px 14px 6px 18px; border-radius: 32px 4px 4px 32px; }
+  .entries .content { font-size: 21px; }
+
+  @keyframes float-away {
+    0% { transform: translate(0, 0) scale(1) rotate(0); opacity: 1; }
+    25% { transform: translate(12vw, 14px) scale(0.8) rotate(8deg); opacity: 1; }
+    50% { transform: translate(28vw, -4px) scale(0.55) rotate(-6deg); opacity: 1; }
+    75% { transform: translate(48vw, 18px) scale(0.4) rotate(10deg); opacity: 0.8; }
+    100% { transform: translate(70vw, 4px) scale(0.3) rotate(-4deg); opacity: 0; }
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {
