@@ -1,4 +1,19 @@
-/* 일부러 수수하게 만든 기본 디자인입니다. Claude에게 마음껏 바꿔 달라고 해 보세요. */
+/* 바다 위를 떠다니는 유리병 편지 */
+
+:root {
+  --sky-top: #cfeaf0;
+  --sky-low: #8ccdd6;
+  --sea: #1d6f88;
+  --sea-back: #3a93a8;
+  --deep: #08283a;
+  --ink: #0b3a4a;
+  --paper: #f6ecd0;
+  --paper-ink: #4a3a22;
+  --cork: #b98a56;
+  --ribbon: #c4453c;
+  --serif: "Gowun Batang", "Batang", serif;
+  --hand: "Nanum Pen Script", "Gowun Batang", cursive;
+}
 
 * {
   box-sizing: border-box;
@@ -6,70 +21,171 @@
 
 body {
   margin: 0;
-  background: #f5f5f5;
-  color: #333;
-  font-family: system-ui, "Malgun Gothic", sans-serif;
-  line-height: 1.5;
+  background: var(--deep);
+  color: #eaf7f7;
+  font-family: var(--serif);
+  line-height: 1.7;
 }
 
-.wrap {
+/* ── 하늘과 수면 ───────────────────────── */
+
+.hero {
+  position: relative;
+  overflow: hidden;
+  padding: 40px 16px 64px;
+  background:
+    radial-gradient(circle at 82% 14%, rgba(255, 244, 214, 0.9) 0, rgba(255, 244, 214, 0) 22%),
+    linear-gradient(var(--sky-top), var(--sky-low));
+  color: var(--ink);
+}
+
+header {
   max-width: 640px;
-  margin: 0 auto;
-  padding: 24px 16px 48px;
+  margin: 0 auto 24px;
+  text-align: center;
 }
 
 h1 {
   margin: 0 0 4px;
-  font-size: 28px;
-}
-
-h2 {
-  font-size: 20px;
-  margin: 32px 0 12px;
+  font-size: 34px;
+  letter-spacing: -0.01em;
 }
 
 .intro {
-  margin: 0 0 20px;
-  color: #666;
+  margin: 0;
 }
 
-.card {
-  background: #fff;
-  border: 1px solid #ddd;
-  border-radius: 6px;
-  padding: 16px;
+/* ── 유리병 ───────────────────────────── */
+
+.stage {
+  position: relative;
+  z-index: 1;
+  width: min(440px, 100%);
+  margin: 0 auto;
+}
+
+.bottle {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  animation: bob 5.5s ease-in-out infinite;
+}
+
+.cork {
+  position: relative;
+  z-index: 3;
+  width: 58px;
+  height: 38px;
+  margin-bottom: -8px;
+  border-radius: 8px 8px 4px 4px;
+  background:
+    radial-gradient(circle at 30% 40%, rgba(0, 0, 0, 0.12) 0 2px, transparent 3px),
+    radial-gradient(circle at 70% 65%, rgba(0, 0, 0, 0.12) 0 2px, transparent 3px),
+    var(--cork);
+  box-shadow: inset 0 -6px 0 rgba(0, 0, 0, 0.12);
+}
+
+.neck {
+  position: relative;
+  z-index: 2;
+  width: 88px;
+  height: 84px;
+  margin-bottom: -44px;
+  border: 2px solid rgba(255, 255, 255, 0.75);
+  border-bottom: 0;
+  border-radius: 12px 12px 0 0;
+  background: linear-gradient(90deg, rgba(255, 255, 255, 0.5), rgba(255, 255, 255, 0.12) 45%, rgba(190, 235, 240, 0.3));
+}
+
+.body {
+  position: relative;
+  width: 100%;
+  padding: 44px 24px 36px;
+  border: 2px solid rgba(255, 255, 255, 0.7);
+  border-radius: 130px 130px 72px 72px / 100px 100px 72px 72px;
+  background:
+    linear-gradient(115deg, rgba(255, 255, 255, 0.55) 0, rgba(255, 255, 255, 0.12) 22%, rgba(255, 255, 255, 0.04) 60%, rgba(190, 235, 240, 0.3) 100%);
+  box-shadow:
+    inset 0 0 44px rgba(255, 255, 255, 0.4),
+    inset 14px 0 0 -8px rgba(255, 255, 255, 0.55),
+    0 34px 60px rgba(8, 50, 70, 0.35);
+}
+
+/* ── 병 속 편지지(입력창) ───────────────── */
+
+.paper {
+  padding: 20px 20px 18px;
+  border-radius: 4px;
+  background:
+    repeating-linear-gradient(transparent 0 33px, rgba(120, 90, 40, 0.12) 33px 34px),
+    var(--paper);
+  color: var(--paper-ink);
+  box-shadow: 0 6px 14px rgba(40, 30, 10, 0.25);
+  transform: rotate(-1.2deg);
 }
 
 label {
   display: block;
-  margin: 12px 0 4px;
-  font-weight: bold;
-  font-size: 14px;
+  margin: 10px 0 0;
+  font-size: 13px;
+  font-weight: 700;
 }
 
 label:first-child {
   margin-top: 0;
 }
 
-input {
+input,
+textarea {
+  display: block;
   width: 100%;
-  padding: 10px;
-  border: 1px solid #ccc;
-  border-radius: 4px;
-  font: inherit;
+  padding: 4px 2px;
+  border: 0;
+  border-bottom: 2px dashed rgba(120, 90, 40, 0.45);
+  border-radius: 0;
+  background: transparent;
+  color: var(--paper-ink);
+  font-family: var(--hand);
+  font-size: 26px;
+  line-height: 1.25;
+  resize: none;
+}
+
+input::placeholder,
+textarea::placeholder {
+  color: rgba(74, 58, 34, 0.45);
+}
+
+input:focus-visible,
+textarea:focus-visible {
+  outline: 0;
+  border-bottom-color: var(--sea);
+  border-bottom-style: solid;
 }
 
 button {
-  margin-top: 16px;
+  display: block;
   width: 100%;
-  padding: 12px;
+  margin-top: 16px;
+  padding: 11px;
   border: 0;
-  border-radius: 4px;
-  background: #555;
+  border-radius: 999px;
+  background: var(--sea);
   color: #fff;
   font: inherit;
-  font-weight: bold;
+  font-weight: 700;
   cursor: pointer;
+  box-shadow: 0 3px 0 #124d61;
+}
+
+button:hover:not(:disabled) {
+  background: #25819c;
+}
+
+button:focus-visible {
+  outline: 3px solid #fff;
+  outline-offset: 2px;
 }
 
 button:disabled {
@@ -77,38 +193,240 @@ button:disabled {
   cursor: default;
 }
 
+/* 돌돌 말린 편지 (보내는 동안 보임) */
+
+.scroll {
+  display: none;
+  position: absolute;
+  inset: 50% 14% auto;
+  height: 84px;
+  margin-top: -20px;
+  border-radius: 42px / 14px;
+  background:
+    linear-gradient(90deg, rgba(0, 0, 0, 0.14), transparent 18%, transparent 82%, rgba(0, 0, 0, 0.14)),
+    var(--paper);
+  box-shadow: 0 6px 14px rgba(40, 30, 10, 0.3);
+}
+
+.scroll::after {
+  content: "";
+  position: absolute;
+  left: 50%;
+  top: -4px;
+  bottom: -4px;
+  width: 16px;
+  margin-left: -8px;
+  background: var(--ribbon);
+}
+
+.stage.sealing .paper,
+.stage.drifting .paper {
+  display: none;
+}
+
+.stage.sealing .scroll,
+.stage.drifting .scroll {
+  display: block;
+  animation: pop 0.5s ease-out;
+}
+
+.stage.sealing .cork,
+.stage.drifting .cork {
+  animation: cork-in 0.7s ease-in;
+}
+
+/* ── 물결 ─────────────────────────────── */
+
+.waves {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 2;
+  height: 150px;
+  pointer-events: none;
+}
+
+.wave {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-repeat: repeat-x;
+  background-size: 1200px 100%;
+}
+
+.wave-back {
+  height: 130px;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1200 130' preserveAspectRatio='none'%3E%3Cpath d='M0 40 Q150 0 300 40 T600 40 T900 40 T1200 40 V130 H0Z' fill='%233a93a8'/%3E%3C/svg%3E");
+  animation: flow 16s linear infinite reverse;
+}
+
+.wave-front {
+  height: 100px;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1200 100' preserveAspectRatio='none'%3E%3Cpath d='M0 30 Q150 0 300 30 T600 30 T900 30 T1200 30 V100 H0Z' fill='%231d6f88'/%3E%3C/svg%3E");
+  animation: flow 9s linear infinite;
+}
+
+/* ── 바다 속 병 목록 ─────────────────── */
+
+.sea {
+  padding: 24px 16px 72px;
+  background: linear-gradient(var(--sea), var(--deep) 700px);
+}
+
+.sea > * {
+  max-width: 640px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+h2 {
+  margin-top: 0;
+  margin-bottom: 12px;
+  font-size: 22px;
+}
+
 #count {
-  color: #999;
-  font-weight: normal;
+  color: #9fd3dc;
+  font-weight: 400;
   font-size: 16px;
 }
 
 .status {
-  color: #999;
-  margin: 0;
+  margin: 0 auto 16px;
+  color: #cfeaf0;
 }
 
 .entries {
   list-style: none;
-  margin: 0;
   padding: 0;
 }
 
 .entries li {
-  background: #fff;
-  border: 1px solid #ddd;
-  border-radius: 6px;
-  padding: 12px 16px;
-  margin-bottom: 8px;
+  position: relative;
+  width: min(520px, 92%);
+  margin-bottom: 32px;
+  padding: 12px 40px 12px 14px;
+  border: 2px solid rgba(255, 255, 255, 0.5);
+  border-radius: 64px 22px 22px 64px;
+  background: linear-gradient(115deg, rgba(255, 255, 255, 0.28), rgba(255, 255, 255, 0.06) 55%, rgba(190, 235, 240, 0.16));
+  box-shadow: inset 0 0 22px rgba(255, 255, 255, 0.18), 0 14px 26px rgba(0, 20, 30, 0.35);
+  animation: bob 5s ease-in-out infinite;
+  animation-delay: var(--d, 0s);
+}
+
+.entries li::after {
+  content: "";
+  position: absolute;
+  right: -16px;
+  top: 50%;
+  width: 28px;
+  height: 38px;
+  margin-top: -19px;
+  border-radius: 4px 9px 9px 4px;
+  background: var(--cork);
+  box-shadow: inset -5px 0 0 rgba(0, 0, 0, 0.12);
+}
+
+.entries li:nth-child(even) {
+  margin-left: auto;
+  margin-right: 16px;
+  animation-name: bob-alt;
+}
+
+.entries li.arrived {
+  animation: arrive 1.4s ease-out, bob 5s ease-in-out 1.4s infinite;
+}
+
+.note {
+  padding: 8px 18px 8px 22px;
+  border-radius: 40px 4px 4px 40px;
+  background: var(--paper);
+  color: var(--paper-ink);
 }
 
 .entries .content {
-  margin: 0 0 4px;
-  font-size: 17px;
+  margin: 0;
+  font-family: var(--hand);
+  font-size: 26px;
+  line-height: 1.3;
+  overflow-wrap: anywhere;
 }
 
 .entries .meta {
-  margin: 0;
-  color: #999;
+  margin: 2px 0 0;
   font-size: 13px;
+  color: rgba(74, 58, 34, 0.7);
+}
+
+/* ── 움직임 ───────────────────────────── */
+
+@keyframes bob {
+  0%, 100% { transform: translateY(0) rotate(-1.5deg); }
+  50% { transform: translateY(-8px) rotate(1.5deg); }
+}
+
+@keyframes bob-alt {
+  0%, 100% { transform: translateY(-5px) rotate(1.2deg); }
+  50% { transform: translateY(5px) rotate(-1.2deg); }
+}
+
+@keyframes flow {
+  to { background-position-x: 1200px; }
+}
+
+@keyframes pop {
+  from { transform: scale(0.6); opacity: 0; }
+  to { transform: scale(1); opacity: 1; }
+}
+
+@keyframes cork-in {
+  from { transform: translateY(-46px); }
+  to { transform: translateY(0); }
+}
+
+@keyframes arrive {
+  from { transform: translateX(-60px); opacity: 0; }
+  to { transform: translateX(0); opacity: 1; }
+}
+
+/* 병이 파도를 따라 떠내려가고, 빈 병이 다시 떠오름 */
+
+.drift {
+  transform-origin: 50% 80%;
+}
+
+.stage.drifting .drift {
+  animation: float-away 3.6s cubic-bezier(0.45, 0, 0.8, 0.6) forwards;
+}
+
+.stage.arriving .drift {
+  animation: rise 0.9s ease-out;
+}
+
+@keyframes float-away {
+  0% { transform: translate(0, 0) scale(1) rotate(0); opacity: 1; }
+  25% { transform: translate(14vw, 18px) scale(0.85) rotate(8deg); opacity: 1; }
+  50% { transform: translate(32vw, -4px) scale(0.62) rotate(-6deg); opacity: 1; }
+  75% { transform: translate(52vw, 22px) scale(0.46) rotate(10deg); opacity: 0.8; }
+  100% { transform: translate(76vw, 6px) scale(0.34) rotate(-4deg); opacity: 0; }
+}
+
+@keyframes rise {
+  from { transform: translateY(70px); opacity: 0; }
+  to { transform: translateY(0); opacity: 1; }
+}
+
+@media (max-width: 480px) {
+  h1 { font-size: 28px; }
+  .body { padding: 40px 14px 28px; }
+  .entries li { width: 96%; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation: none !important;
+    transition: none !important;
+  }
 }

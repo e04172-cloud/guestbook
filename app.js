@@ -41,15 +41,20 @@ function formatTime(iso) {
   });
 }
 
-async function render() {
+async function render(highlightFirst = false) {
   try {
     const entries = await loadEntries();
     list.innerHTML = "";
     count.textContent = `(${entries.length})`;
-    statusText.textContent = entries.length === 0 ? "아직 남긴 글이 없어요. 첫 번째로 남겨 보세요!" : "";
+    statusText.textContent = entries.length === 0 ? "아직 떠 있는 병이 없어요. 첫 번째 병을 띄워 보세요!" : "";
 
-    for (const entry of entries) {
+    entries.forEach((entry, index) => {
       const item = document.createElement("li");
+      item.style.setProperty("--d", `${-(index * 1.3) % 5}s`);
+      if (highlightFirst && index === 0) item.classList.add("arrived");
+
+      const note = document.createElement("div");
+      note.className = "note";
 
       const content = document.createElement("p");
       content.className = "content";
@@ -59,29 +64,61 @@ async function render() {
       meta.className = "meta";
       meta.textContent = `${entry.nickname} · ${formatTime(entry.created_at)}`;
 
-      item.append(content, meta);
+      note.append(content, meta);
+      item.append(note);
       list.append(item);
-    }
+    });
   } catch (error) {
     console.error(error);
     statusText.textContent = "글을 불러오지 못했어요.";
   }
 }
 
+// 병 띄우기 연출: 편지가 말리고 코르크로 막힌 뒤, 파도를 따라 떠내려간다
+const stage = document.getElementById("stage");
+const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+const wait = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
+
+async function floatBottleAway() {
+  stage.classList.add("sealing");
+  await wait(reduceMotion ? 300 : 800);
+  stage.classList.add("drifting");
+  statusText.textContent = "병이 파도를 따라 떠나갔어요. 누군가에게 닿을 거예요.";
+  await wait(reduceMotion ? 600 : 3600);
+}
+
+async function showEmptyBottle() {
+  contentInput.value = "";
+  stage.classList.remove("sealing", "drifting");
+  stage.classList.add("arriving");
+  await wait(reduceMotion ? 0 : 900);
+  stage.classList.remove("arriving");
+}
+
+// Enter로 보내기 (줄바꿈은 Shift+Enter)
+contentInput.addEventListener("keydown", (event) => {
+  if (event.key === "Enter" && !event.shiftKey && !event.isComposing) {
+    event.preventDefault();
+    form.requestSubmit();
+  }
+});
+
 form.addEventListener("submit", async (event) => {
   event.preventDefault();
   const nickname = nicknameInput.value.trim();
-  const content = contentInput.value.trim();
+  const content = contentInput.value.trim().replace(/\s*\n\s*/g, " ");
   if (!nickname || !content) return;
 
   const button = form.querySelector("button");
   button.disabled = true;
   try {
     await saveEntry(nickname, content);
-    contentInput.value = "";
-    await render();
+    await floatBottleAway();
+    await render(true);
+    await showEmptyBottle();
   } catch (error) {
     console.error(error);
+    stage.classList.remove("sealing", "drifting");
     alert("저장하지 못했어요. 잠시 후 다시 시도해 주세요.");
   } finally {
     button.disabled = false;
